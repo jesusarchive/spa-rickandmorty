@@ -31,6 +31,7 @@ export type CharacterResponse = {
   };
   results: Character[];
 };
+
 export type CharacterFilters = {
   name?: string;
   status?: CharacterStatus;
