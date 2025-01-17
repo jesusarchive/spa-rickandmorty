@@ -15,10 +15,14 @@ export default function CharacterDataGrid() {
   );
 
   useEffect(() => {
+    if (error) {
+      setResults(dispatch)({ results: null });
+      return;
+    }
     if (JSON.stringify(state?.results) !== JSON.stringify(data?.results)) {
       setResults(dispatch)({ results: data?.results });
     }
-  }, [data?.results, dispatch, state?.results]);
+  }, [data?.results, dispatch, state?.results, error]);
 
   return (
     <div className="h-dvh w-dvw">
