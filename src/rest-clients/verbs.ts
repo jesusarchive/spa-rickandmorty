@@ -10,59 +10,47 @@ const defaultHeaders = {
 
 const defaultOptions = {};
 
-function get(url: string, options: RequestOptions = {}) {
-  const { headers = {}, params = {} } = options;
+async function makeRequest(
+  method: string,
+  url: string,
+  options: RequestOptions = {}
+) {
+  const { headers = {}, params = {}, body } = options;
   const queryString = new URLSearchParams(params).toString();
   const fullUrl = queryString ? `${url}?${queryString}` : url;
 
-  return fetch(fullUrl, {
-    method: "GET",
-    headers: { ...defaultHeaders, ...headers },
-    ...defaultOptions,
-  });
-}
-
-function post(url: string, options: RequestOptions = {}) {
-  const { headers = {}, body } = options;
-
-  return fetch(url, {
-    method: "POST",
+  const response = await fetch(fullUrl, {
+    method,
     headers: { ...defaultHeaders, ...headers },
     body: body ? JSON.stringify(body) : undefined,
     ...defaultOptions,
   });
+
+  if (!response.ok) {
+    throw new Error(`Unknown Error`);
+  }
+
+  return response;
 }
 
-function put(url: string, options: RequestOptions = {}) {
-  const { headers = {}, body } = options;
-
-  return fetch(url, {
-    method: "PUT",
-    headers: { ...defaultHeaders, ...headers },
-    body: body ? JSON.stringify(body) : undefined,
-    ...defaultOptions,
-  });
+async function get(url: string, options: RequestOptions = {}) {
+  return makeRequest("GET", url, options);
 }
 
-function patch(url: string, options: RequestOptions = {}) {
-  const { headers = {}, body } = options;
-
-  return fetch(url, {
-    method: "PATCH",
-    headers: { ...defaultHeaders, ...headers },
-    body: body ? JSON.stringify(body) : undefined,
-    ...defaultOptions,
-  });
+async function post(url: string, options: RequestOptions = {}) {
+  return makeRequest("POST", url, options);
 }
 
-function del(url: string, options: RequestOptions = {}) {
-  const { headers = {} } = options;
+async function put(url: string, options: RequestOptions = {}) {
+  return makeRequest("PUT", url, options);
+}
 
-  return fetch(url, {
-    method: "DELETE",
-    headers: { ...defaultHeaders, ...headers },
-    ...defaultOptions,
-  });
+async function patch(url: string, options: RequestOptions = {}) {
+  return makeRequest("PATCH", url, options);
+}
+
+async function del(url: string, options: RequestOptions = {}) {
+  return makeRequest("DELETE", url, options);
 }
 
 export default function getVerbs() {

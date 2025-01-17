@@ -29,6 +29,7 @@ export default async function getRickAndMortyCharacters({
 
     return await res.json();
   } catch (ex) {
+    console.log("error", ex);
     throw await handleFetchErrors(ex);
   }
 }
