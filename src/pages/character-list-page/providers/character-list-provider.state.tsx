@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 import React from "react";
 
@@ -9,11 +10,13 @@ export type CharacterListActionKind =
 const CharacterListActionKind = {
   SET_QUERY: "SET_QUERY",
   SET_RESULTS: "SET_RESULTS",
+  SET_FILTERS: "SET_FILTERS",
 } as const;
 
 export type CharacterListState = {
   query: string;
   results: Character[];
+  filters: any | null;
 };
 
 type CharacterListSetQueryPayload = {
@@ -24,14 +27,22 @@ type CharacterListSetResultsPayload = {
   results: Character[];
 };
 
+type CharacterListSetFiltersPayload = {
+  filters: any | null;
+};
+
 export type CharacterListAction = {
   type: CharacterListActionKind;
-  payload: CharacterListSetQueryPayload | CharacterListSetResultsPayload;
+  payload:
+    | CharacterListSetQueryPayload
+    | CharacterListSetResultsPayload
+    | CharacterListSetFiltersPayload;
 };
 
 export const getDefaultState = (): CharacterListState => ({
   query: "",
   results: [],
+  filters: null,
 });
 
 export function CharacterListPageReducer(
@@ -49,6 +60,12 @@ export function CharacterListPageReducer(
       return {
         ...state,
         results: (action.payload as CharacterListSetResultsPayload).results,
+      };
+    }
+    case CharacterListActionKind.SET_FILTERS: {
+      return {
+        ...state,
+        filters: (action.payload as CharacterListSetFiltersPayload).filters,
       };
     }
 
@@ -71,7 +88,16 @@ export const setResults =
   (dispatch: React.Dispatch<CharacterListAction>) =>
   ({ results }: CharacterListSetResultsPayload) => {
     dispatch({
-      type: CharacterListActionKind.SET_QUERY,
+      type: CharacterListActionKind.SET_RESULTS,
       payload: { results },
+    });
+  };
+
+export const setFilters =
+  (dispatch: React.Dispatch<CharacterListAction>) =>
+  ({ filters }: CharacterListSetFiltersPayload) => {
+    dispatch({
+      type: CharacterListActionKind.SET_FILTERS,
+      payload: { filters },
     });
   };

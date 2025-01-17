@@ -1,9 +1,12 @@
 import type { Character } from "@/rest-clients/rick-and-morty/types";
 
 import useGetRickAndMortyCharacters from "../../hooks/use-get-rick-and-morty-characters";
+import useCharacterListContext from "../../providers/character-list-provider.hook";
 import CharacterDataGridHeaderBar from "./character-data-grid-header-bar";
 
 export default function CharacterDataGrid() {
+  const { state } = useCharacterListContext();
+  console.log("state", state);
   const { data, isLoading, error } = useGetRickAndMortyCharacters();
 
   if (isLoading) {
