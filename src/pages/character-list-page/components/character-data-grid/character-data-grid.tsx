@@ -24,45 +24,54 @@ export default function CharacterDataGrid() {
     }
   }, [data?.results, dispatch, state?.results, error]);
 
+  const hasData = React.useMemo(
+    () =>
+      !isLoading &&
+      !error &&
+      Array.isArray(data?.results) &&
+      data?.results?.length > 0,
+    [isLoading, error, data?.results]
+  );
+
   return (
-    <div className="h-dvh w-dvw">
-      <div className="h-full w-full flex flex-col p-6 gap-4">
-        <h1 className="font-bold text-3xl">Rick and Morty Characters</h1>
+    <div className="h-screen w-screen p-10 overflow-hidden">
+      <div className="flex flex-col gap-14">
+        <h1 className="font-bold text-4xl">Rick and Morty Characters</h1>
         <CharacterDataGridHeaderBar />
-        {isLoading && (
-          <div className="h-full flex items-center justify-center">
-            <Spinner />
-          </div>
-        )}
+      </div>
+
+      <div className="h-full w-full flex flex-col gap-8 overflow-hidden">
         {error && (
-          <div className="h-full flex items-center justify-center">
+          <div className="h-full flex items-center justify-center p-10">
             <p>Error fetching characters</p>
           </div>
         )}
-        {!isLoading &&
-          !error &&
-          Array.isArray(data?.results) &&
-          data?.results?.length > 0 && (
-            <div className="overflow-y-auto h-full">
-              <ul className="border-t border-gray-200">
-                {data?.results?.map((el: Character) => (
-                  <li
-                    key={el.id}
-                    className="flex items-center gap-4 bg-gray-100 p-4 rounded-lg shadow border-b border-gray-200"
-                  >
-                    <img
-                      src={el.image}
-                      alt={el.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                    <div>
-                      <h2 className="text-lg font-semibold">{el.name}</h2>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+        {!error && isLoading && (
+          <div className="h-full flex items-center justify-center p-10">
+            <Spinner />
+          </div>
+        )}
+        {hasData && (
+          <div className="overflow-y-auto h-full p-10">
+            <ul className="border-t border-gray-200 p-4">
+              {data?.results?.map((el: Character) => (
+                <li
+                  key={el.id}
+                  className="flex items-center gap-8 bg-gray-100 p-8 rounded-lg shadow border-b border-gray-200 hover:bg-gray-200"
+                >
+                  <img
+                    src={el.image}
+                    alt={el.name}
+                    className="w-20 h-20 rounded-full"
+                  />
+                  <div>
+                    <h2 className="text-2xl font-semibold">{el.name}</h2>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
