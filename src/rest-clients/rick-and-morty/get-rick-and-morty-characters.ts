@@ -13,13 +13,6 @@ export default async function getRickAndMortyCharacters({
   type,
   gender,
 }: GetRickAndMortyCharactersProps) {
-  console.log("getRickAndMortyCharacters filters", {
-    name,
-    status,
-    species,
-    type,
-    gender,
-  });
   const { get } = getVerbs();
   const endpoint = `${API_CONFIG.baseUrl}/character`;
 

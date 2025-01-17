@@ -39,7 +39,8 @@ const schema = z.object({
 
 export default function CharacterDataGridHeaderBar() {
   const {
-    state: { filters },
+    state: { filters, results },
+    dispatch,
   } = useCharacterListContext();
   const {
     register,
@@ -49,7 +50,6 @@ export default function CharacterDataGridHeaderBar() {
     resolver: zodResolver(schema),
     defaultValues: filters as CharacterFilters,
   });
-  const { dispatch } = useCharacterListContext();
 
   const onSearchButtonClick = (data: CharacterFilters) => {
     setFilters(dispatch)({
@@ -63,6 +63,9 @@ export default function CharacterDataGridHeaderBar() {
       className="w-full h-24 flex items-center justify-between"
     >
       <div className="flex items-center gap-4">
+        <div className="text-left">
+          <p>Results: {results?.length ?? 0}</p>
+        </div>
         <div>
           <Input
             className="border p-2 rounded"
