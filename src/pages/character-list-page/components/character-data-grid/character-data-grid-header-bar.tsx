@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -6,35 +7,30 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Select from "@/components/ui/select";
 import type { CharacterFilters } from "@/rest-clients/rick-and-morty/types";
+import capitalize from "@/utils/capitalize";
 
 import useCharacterListContext from "../../providers/character-list-provider.hook";
 import { setFilters } from "../../providers/character-list-provider.state";
+
+const STATUS_VALUES = ["alive", "dead", "unknown"];
+const GENDER_VALUES = ["female", "male", "genderless", "unknown"];
 
 const schema = z.object({
   name: z.string().optional(),
   status: z
     .string()
     .optional()
-    .refine(
-      (data) => (data ? ["alive", "dead", "unknown"].includes(data) : true),
-      {
-        message: "Status must be alive, dead, or unknown",
-      }
-    ),
+    .refine((data) => (data ? STATUS_VALUES.includes(data) : true), {
+      message: "Status must be alive, dead, or unknown",
+    }),
   species: z.string().optional(),
   type: z.string().optional(),
   gender: z
     .string()
     .optional()
-    .refine(
-      (data) =>
-        data
-          ? ["female", "male", "genderless", "unknown"].includes(data)
-          : true,
-      {
-        message: "Gender must be female, male, genderless, or unknown",
-      }
-    ),
+    .refine((data) => (data ? GENDER_VALUES.includes(data) : true), {
+      message: "Gender must be female, male, genderless, or unknown",
+    }),
 });
 
 export default function CharacterDataGridHeaderBar() {
@@ -50,6 +46,28 @@ export default function CharacterDataGridHeaderBar() {
     resolver: zodResolver(schema),
     defaultValues: filters as CharacterFilters,
   });
+
+  const statusSelectOptions = React.useMemo(
+    () => [
+      { value: "", label: "Filter by status" },
+      ...STATUS_VALUES.map((el) => ({
+        value: el,
+        label: capitalize(el),
+      })),
+    ],
+    []
+  );
+
+  const genderSelectOptions = React.useMemo(
+    () => [
+      { value: "", label: "Filter by gender" },
+      ...GENDER_VALUES.map((el) => ({
+        value: el,
+        label: capitalize(el),
+      })),
+    ],
+    []
+  );
 
   const onSearchButtonClick = (data: CharacterFilters) => {
     setFilters(dispatch)({
@@ -78,12 +96,7 @@ export default function CharacterDataGridHeaderBar() {
         <div>
           <Select
             className="border p-2 rounded"
-            options={[
-              { value: "", label: "Filter by status" },
-              { value: "alive", label: "Alive" },
-              { value: "dead", label: "Dead" },
-              { value: "unknown", label: "Unknown" },
-            ]}
+            options={statusSelectOptions}
             {...register("status")}
           />
           {errors.status && <p>{errors.status.message as string}</p>}
@@ -109,13 +122,7 @@ export default function CharacterDataGridHeaderBar() {
         <div>
           <Select
             className="border p-2 rounded"
-            options={[
-              { value: "", label: "Filter by gender" },
-              { value: "female", label: "Female" },
-              { value: "male", label: "Male" },
-              { value: "genderless", label: "Genderless" },
-              { value: "unknown", label: "Unknown" },
-            ]}
+            options={genderSelectOptions}
             {...register("gender")}
           />
           {errors.gender && <p>{errors.gender.message as string}</p>}
