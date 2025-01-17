@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 
 import { cn } from "@/utils/cn";
 
@@ -13,7 +13,7 @@ export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   loading?: boolean;
 };
 
-const SelectComponent = forwardRef<HTMLSelectElement, SelectProps>(
+const SelectComponent = React.forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
     const { className, options, loading, ...rest } = props;
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 
 import Spinner from "@/components/ui/spinner";
 import type { Character } from "@/rest-clients/rick-and-morty/types";
@@ -14,7 +14,7 @@ export default function CharacterDataGrid() {
     state.filters ?? {}
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (error) {
       setResults(dispatch)({ results: null });
       return;

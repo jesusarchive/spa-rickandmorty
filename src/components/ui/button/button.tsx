@@ -1,10 +1,10 @@
-import React, { forwardRef } from "react";
+import React from "react";
 
 import { cn } from "@/utils/cn";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
+const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props, ref) => {
     return (
       <button
