@@ -51,7 +51,7 @@ export default function CharacterDataGridHeaderBar() {
   });
   const { dispatch } = useCharacterListContext();
 
-  const handleApplySearch = (data: CharacterFilters) => {
+  const onSearchButtonClick = (data: CharacterFilters) => {
     setFilters(dispatch)({
       filters: data,
     });
@@ -59,7 +59,7 @@ export default function CharacterDataGridHeaderBar() {
 
   return (
     <form
-      onSubmit={handleSubmit(handleApplySearch)}
+      onSubmit={handleSubmit(onSearchButtonClick)}
       className="w-full h-24 flex items-center justify-between"
     >
       <div className="flex items-center gap-4">
