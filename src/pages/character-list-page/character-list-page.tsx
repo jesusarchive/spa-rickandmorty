@@ -1,6 +1,7 @@
 import type { Character } from "@/rest-clients/rick-and-morty/types";
 
 import useGetRickAndMortyCharacters from "./hooks/use-get-rick-and-morty-characters";
+import CharacterListProvider from "./providers/character-list-provider";
 
 function CharacterListPageInternal() {
   const { data, isLoading, error } = useGetRickAndMortyCharacters();
@@ -40,5 +41,9 @@ function CharacterListPageInternal() {
 }
 
 export default function CharacterListPage() {
-  return <CharacterListPageInternal />;
+  return (
+    <CharacterListProvider>
+      <CharacterListPageInternal />
+    </CharacterListProvider>
+  );
 }
