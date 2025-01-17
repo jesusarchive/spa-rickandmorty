@@ -15,14 +15,10 @@ export default function CharacterDataGrid() {
   );
 
   React.useEffect(() => {
-    if (error) {
-      setResults(dispatch)({ results: null });
-      return;
-    }
     if (JSON.stringify(state?.results) !== JSON.stringify(data?.results)) {
       setResults(dispatch)({ results: data?.results });
     }
-  }, [data?.results, dispatch, state?.results, error]);
+  }, [data?.results, dispatch, state?.results]);
 
   const hasData = React.useMemo(
     () =>
@@ -42,12 +38,12 @@ export default function CharacterDataGrid() {
 
       <div className="h-full w-full flex flex-col gap-8 overflow-hidden">
         {error && (
-          <div className="h-full flex items-center justify-center p-10">
-            <p>Error fetching characters</p>
+          <div className="h-full flex justify-center items-center">
+            <p>Error fetching characters.</p>
           </div>
         )}
         {!error && isLoading && (
-          <div className="h-full flex items-center justify-center p-10">
+          <div className="h-full flex justify-center items-center">
             <Spinner />
           </div>
         )}

@@ -27,6 +27,7 @@ export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
         setError(
           err instanceof Error ? err : new Error("An unknown error occurred")
         );
+        setData(null);
       } finally {
         setIsLoading(false);
       }
