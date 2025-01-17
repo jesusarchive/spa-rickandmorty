@@ -24,7 +24,6 @@ export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
         setData(result);
         setError(null);
       } catch (err) {
-        console.log("Error", err);
         setError(
           err instanceof Error ? err : new Error("An unknown error occurred")
         );
