@@ -18,12 +18,14 @@ export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
 
   React.useEffect(() => {
     const fetchData = async () => {
+      console.log("set loading");
       setIsLoading(true);
       try {
         const result = await memoizedQueryFn();
         setData(result);
         setError(null);
       } catch (err) {
+        console.log("set error");
         setError(
           err instanceof Error ? err : new Error("An unknown error occurred")
         );

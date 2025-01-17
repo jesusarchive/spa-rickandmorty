@@ -1,8 +1,12 @@
+export type CharacterStatus = "alive" | "dead" | "unknown";
+export type CharacterGender = "female" | "male" | "genderless" | "unknown";
+export type CharacterSpecie = "human" | "humanoid";
+
 export type Character = {
   id: number;
   name: string;
-  status: string;
-  species: string;
+  status: CharacterStatus;
+  species: CharacterSpecie;
   type: string;
   gender: string;
   origin: Location;
@@ -26,4 +30,11 @@ export type CharacterResponse = {
     prev: string | null;
   };
   results: Character[];
+};
+export type CharacterFilters = {
+  name?: string;
+  status?: CharacterStatus;
+  species?: CharacterSpecie;
+  type?: string;
+  gender?: CharacterGender;
 };

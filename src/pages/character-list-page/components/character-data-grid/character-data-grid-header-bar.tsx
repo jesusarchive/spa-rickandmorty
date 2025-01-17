@@ -5,13 +5,14 @@ import { z } from "zod";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Select from "@/components/ui/select";
+import type { CharacterFilters } from "@/rest-clients/rick-and-morty/types";
 
 import useCharacterListContext from "../../providers/character-list-provider.hook";
 import { setFilters } from "../../providers/character-list-provider.state";
 
 const schema = z.object({
-  nameFilter: z.string().optional(),
-  statusFilter: z
+  name: z.string().optional(),
+  status: z
     .string()
     .optional()
     .refine(
@@ -20,9 +21,9 @@ const schema = z.object({
         message: "Status must be alive, dead, or unknown",
       }
     ),
-  speciesFilter: z.string().optional(),
-  typeFilter: z.string().optional(),
-  genderFilter: z
+  species: z.string().optional(),
+  type: z.string().optional(),
+  gender: z
     .string()
     .optional()
     .refine(
@@ -38,15 +39,19 @@ const schema = z.object({
 
 export default function CharacterDataGridHeaderBar() {
   const {
+    state: { filters },
+  } = useCharacterListContext();
+  const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: filters as CharacterFilters,
   });
   const { dispatch } = useCharacterListContext();
 
-  const handleApplySearch = (data) => {
+  const handleApplySearch = (data: CharacterFilters) => {
     setFilters(dispatch)({
       filters: data,
     });
@@ -55,7 +60,7 @@ export default function CharacterDataGridHeaderBar() {
   return (
     <form
       onSubmit={handleSubmit(handleApplySearch)}
-      className="w-full h-24 flex items-center justify-between px-4"
+      className="w-full h-24 flex items-center justify-between"
     >
       <div className="flex items-center gap-4">
         <div>
@@ -63,9 +68,9 @@ export default function CharacterDataGridHeaderBar() {
             className="border p-2 rounded"
             type="text"
             placeholder="Filter by name"
-            {...register("nameFilter")}
+            {...register("name")}
           />
-          {errors.nameFilter && <p>{errors.nameFilter.message as string} </p>}
+          {errors.name && <p>{errors.name.message as string} </p>}
         </div>
         <div>
           <Select
@@ -76,31 +81,27 @@ export default function CharacterDataGridHeaderBar() {
               { value: "dead", label: "Dead" },
               { value: "unknown", label: "Unknown" },
             ]}
-            {...register("statusFilter")}
+            {...register("status")}
           />
-          {errors.statusFilter && (
-            <p>{errors.statusFilter.message as string}</p>
-          )}
+          {errors.status && <p>{errors.status.message as string}</p>}
         </div>
         <div>
           <Input
             className="border p-2 rounded"
             type="text"
             placeholder="Filter by species"
-            {...register("speciesFilter")}
+            {...register("species")}
           />
-          {errors.speciesFilter && (
-            <p>{errors.speciesFilter.message as string}</p>
-          )}
+          {errors.species && <p>{errors.species.message as string}</p>}
         </div>
         <div>
           <Input
             className="border p-2 rounded"
             type="text"
             placeholder="Filter by type"
-            {...register("typeFilter")}
+            {...register("type")}
           />
-          {errors.typeFilter && <p>{errors.typeFilter.message as string}</p>}
+          {errors.type && <p>{errors.type.message as string}</p>}
         </div>
         <div>
           <Select
@@ -112,11 +113,9 @@ export default function CharacterDataGridHeaderBar() {
               { value: "genderless", label: "Genderless" },
               { value: "unknown", label: "Unknown" },
             ]}
-            {...register("genderFilter")}
+            {...register("gender")}
           />
-          {errors.genderFilter && (
-            <p>{errors.genderFilter.message as string}</p>
-          )}
+          {errors.gender && <p>{errors.gender.message as string}</p>}
         </div>
         <div>
           <Button
