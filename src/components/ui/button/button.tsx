@@ -16,6 +16,7 @@ const buttonSizes = {
   sm: "min-h-[32px] min-w-[80px] px-2 py-1 text-sm",
   md: "min-h-[40px] min-w-[100px] px-3 py-1.5",
   lg: "min-h-[50px] min-w-[120px] px-4 py-2 text-lg",
+  icon: "min-h-[40px] min-w-[40px] px-3 py-1.5",
 } as const;
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {

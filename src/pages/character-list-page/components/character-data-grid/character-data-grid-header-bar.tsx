@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RefreshCwIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import Button from "@/components/ui/button";
+import Divider from "@/components/ui/divider";
 import type {
   CharacterFilters,
   CharacterGender,
@@ -94,48 +94,52 @@ export default function CharacterDataGridHeaderBar() {
   return (
     <form
       onSubmit={handleSubmit(onSearch)}
-      className="w-full flex flex-wrap items-center justify-between gap-4"
+      className="w-full flex items-center justify-between p-4 gap-4"
     >
-      <div className="w-full flex flex-wrap items-center justify-between px-12 py-5">
-        <div className="flex gap-4">
-          <span className="font-bold text-xl">
-            Results: {results?.length ?? 0}
-          </span>
-          <Button type="button" onClick={fullReset} variant="ghost" size="sm">
-            <RefreshCwIcon className="h-5 w-5" />
-          </Button>
-        </div>
-        <div className="flex gap-4">
-          <div>
-            <NameFilter {...register("name")} />
-            {errors.name && <p>{errors.name.message as string} </p>}
+      <div className="w-full flex items-center justify-evenly">
+        <div className="w-full flex gap-8">
+          <div className="flex items-center gap-4">
+            <span className="text-xl">
+              {`${results?.length ?? 0} item${
+                results?.length === 1 ? "" : "s"
+              }`}
+            </span>
           </div>
-          <div>
-            <StatusFilter {...register("status")} />
-            {errors.status && <p>{errors.status.message as string}</p>}
+          <Divider />
+          <div className="flex gap-4">
+            <div>
+              <NameFilter {...register("name")} />
+              {errors.name && <p>{errors.name.message as string} </p>}
+            </div>
+            <div>
+              <StatusFilter {...register("status")} />
+              {errors.status && <p>{errors.status.message as string}</p>}
+            </div>
+            <div>
+              <SpecieFilter {...register("species")} />
+              {errors.species && <p>{errors.species.message as string}</p>}
+            </div>
+            <div>
+              <TypeFilter {...register("type")} />
+              {errors.type && <p>{errors.type.message as string}</p>}
+            </div>
+            <div>
+              <GenderFilter {...register("gender")} />
+              {errors.gender && <p>{errors.gender.message as string}</p>}
+            </div>
           </div>
-          <div>
-            <SpecieFilter {...register("species")} />
-            {errors.species && <p>{errors.species.message as string}</p>}
-          </div>
-          <div>
-            <TypeFilter {...register("type")} />
-            {errors.type && <p>{errors.type.message as string}</p>}
-          </div>
-          <div>
-            <GenderFilter {...register("gender")} />
-            {errors.gender && <p>{errors.gender.message as string}</p>}
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div>
-            <Button type="submit">Apply Search</Button>
-          </div>
-          <div>
-            <Button type="button" onClick={fullReset}>
-              Reset Filters
-            </Button>
+          <Divider />
+          <div className="flex gap-4">
+            <div>
+              <Button type="button" variant="secondary" onClick={fullReset}>
+                Reset
+              </Button>
+            </div>
+            <div>
+              <Button type="submit" variant="primary">
+                Search
+              </Button>
+            </div>
           </div>
         </div>
       </div>

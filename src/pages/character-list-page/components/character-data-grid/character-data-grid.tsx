@@ -35,7 +35,7 @@ export default function CharacterDataGrid() {
 
   return (
     <div className="h-screen w-screen p-10 overflow-hidden">
-      <div className="flex flex-col gap-14">
+      <div className="flex flex-col gap-14 p-6">
         <h1 className="font-bold text-4xl">Rick and Morty Characters</h1>
         <CharacterDataGridHeaderBar />
       </div>
@@ -52,7 +52,7 @@ export default function CharacterDataGrid() {
           </div>
         )}
         {hasData && (
-          <div className="overflow-y-auto h-full p-10">
+          <div className="overflow-y-auto h-[85vh] p-6">
             <ul className="border-t border-gray-200 p-4">
               {data?.results?.map((el: Character) => (
                 <li
