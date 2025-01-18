@@ -9,26 +9,28 @@ export const SPECIE_VALUES = {
   humanoid: "humanoid",
 } as const;
 
-const SpecieFilter = React.forwardRef((props: SelectProps, ref) => {
-  const specieSelectOptions = React.useMemo(
-    () => [
-      { value: "", label: "Filter by specie" },
-      ...Object.values(SPECIE_VALUES).map((el) => ({
-        value: el,
-        label: capitalize(el),
-      })),
-    ],
-    []
-  );
+const SpecieFilter = React.forwardRef<HTMLSelectElement, SelectProps>(
+  (props, ref) => {
+    const specieSelectOptions = React.useMemo(
+      () => [
+        { value: "", label: "Filter by specie" },
+        ...Object.values(SPECIE_VALUES).map((el) => ({
+          value: el,
+          label: capitalize(el),
+        })),
+      ],
+      []
+    );
 
-  return (
-    <Select
-      ref={ref as React.RefObject<HTMLSelectElement>}
-      className="border p-2 rounded"
-      options={specieSelectOptions}
-      {...props}
-    />
-  );
-});
+    return (
+      <Select
+        ref={ref}
+        className="border p-2 rounded"
+        options={specieSelectOptions}
+        {...props}
+      />
+    );
+  }
+);
 
 export default SpecieFilter;

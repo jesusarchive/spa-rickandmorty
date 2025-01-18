@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { type FieldError, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import Button from "@/components/ui/button";
@@ -21,6 +22,10 @@ import NameFilter from "./filters/name-filter";
 import SpecieFilter, { SPECIE_VALUES } from "./filters/specie-filter";
 import StatusFilter, { STATUS_VALUES } from "./filters/status-filter";
 import TypeFilter from "./filters/type-filter";
+
+function FormError(props: { error?: FieldError }) {
+  return props.error && <p>{props.error.message as string}</p>;
+}
 
 const schema = z.object({
   name: z.string().optional(),
@@ -79,17 +84,25 @@ export default function CharacterDataGridHeaderBar() {
     defaultValues: filters as CharacterFilters,
   });
 
-  const fullReset = () => {
+  const fullReset = React.useCallback(() => {
     setResults(dispatch)({ results: null });
     setFilters(dispatch)({ filters: null });
     reset();
-  };
+  }, [dispatch, reset]);
 
-  const onSearch = (data: CharacterFilters) => {
-    setFilters(dispatch)({
-      filters: data,
-    });
-  };
+  const onSearch = React.useCallback(
+    (data: CharacterFilters) => {
+      setFilters(dispatch)({
+        filters: data,
+      });
+    },
+    [dispatch]
+  );
+
+  const resultsMessage = React.useMemo(() => {
+    const resultsLength = results?.length ?? 0;
+    return `${resultsLength} item${resultsLength === 1 ? "" : "s"}`;
+  }, [results]);
 
   return (
     <form
@@ -99,39 +112,35 @@ export default function CharacterDataGridHeaderBar() {
       <div className="w-full flex items-center justify-evenly">
         <div className="w-full flex gap-8">
           <div className="flex items-center gap-4">
-            <span className="text-xl">
-              {`${results?.length ?? 0} item${
-                results?.length === 1 ? "" : "s"
-              }`}
-            </span>
+            <span className="text-xl">{resultsMessage}</span>
           </div>
           <Divider />
           <div className="flex gap-4">
             <div>
               <NameFilter {...register("name")} />
-              {errors.name && <p>{errors.name.message as string} </p>}
+              <FormError error={errors.name} />
             </div>
             <div>
               <StatusFilter {...register("status")} />
-              {errors.status && <p>{errors.status.message as string}</p>}
+              <FormError error={errors.status} />
             </div>
             <div>
               <SpecieFilter {...register("species")} />
-              {errors.species && <p>{errors.species.message as string}</p>}
+              <FormError error={errors.species} />
             </div>
             <div>
               <TypeFilter {...register("type")} />
-              {errors.type && <p>{errors.type.message as string}</p>}
+              <FormError error={errors.type} />
             </div>
             <div>
               <GenderFilter {...register("gender")} />
-              {errors.gender && <p>{errors.gender.message as string}</p>}
+              <FormError error={errors.gender} />
             </div>
           </div>
           <Divider />
           <div className="flex gap-4">
             <div>
-              <Button type="button" variant="secondary" onClick={fullReset}>
+              <Button type="reset" variant="secondary" onClick={fullReset}>
                 Reset
               </Button>
             </div>

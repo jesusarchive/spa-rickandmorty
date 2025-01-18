@@ -10,27 +10,28 @@ export const GENDER_VALUES = {
   genderless: "genderless",
   unknown: "unknown",
 } as const;
+const GenderFilter = React.forwardRef<HTMLSelectElement, SelectProps>(
+  (props, ref) => {
+    const genderSelectOptions = React.useMemo(
+      () => [
+        { value: "", label: "Filter by gender" },
+        ...Object.values(GENDER_VALUES).map((el) => ({
+          value: el,
+          label: capitalize(el),
+        })),
+      ],
+      []
+    );
 
-const GenderFilter = React.forwardRef((props: SelectProps, ref) => {
-  const genderSelectOptions = React.useMemo(
-    () => [
-      { value: "", label: "Filter by gender" },
-      ...Object.values(GENDER_VALUES).map((el) => ({
-        value: el,
-        label: capitalize(el),
-      })),
-    ],
-    []
-  );
-
-  return (
-    <Select
-      ref={ref as React.RefObject<HTMLSelectElement>}
-      className="border p-2 rounded"
-      options={genderSelectOptions}
-      {...props}
-    />
-  );
-});
+    return (
+      <Select
+        ref={ref}
+        className="border p-2 rounded"
+        options={genderSelectOptions}
+        {...props}
+      />
+    );
+  }
+);
 
 export default GenderFilter;

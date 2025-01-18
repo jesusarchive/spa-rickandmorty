@@ -10,26 +10,28 @@ export const STATUS_VALUES = {
   unknown: "unknown",
 } as const;
 
-const StatusFilter = React.forwardRef((props: SelectProps, ref) => {
-  const statusSelectOptions = React.useMemo(
-    () => [
-      { value: "", label: "Filter by status" },
-      ...Object.values(STATUS_VALUES).map((el) => ({
-        value: el,
-        label: capitalize(el),
-      })),
-    ],
-    []
-  );
+const StatusFilter = React.forwardRef<HTMLSelectElement, SelectProps>(
+  (props: SelectProps, ref) => {
+    const statusSelectOptions = React.useMemo(
+      () => [
+        { value: "", label: "Filter by status" },
+        ...Object.values(STATUS_VALUES).map((el) => ({
+          value: el,
+          label: capitalize(el),
+        })),
+      ],
+      []
+    );
 
-  return (
-    <Select
-      ref={ref as React.RefObject<HTMLSelectElement>}
-      className="border p-2 rounded"
-      options={statusSelectOptions}
-      {...props}
-    />
-  );
-});
+    return (
+      <Select
+        ref={ref}
+        className="border p-2 rounded"
+        options={statusSelectOptions}
+        {...props}
+      />
+    );
+  }
+);
 
 export default StatusFilter;

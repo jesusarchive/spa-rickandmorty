@@ -1,5 +1,4 @@
 import useQuery from "@/hooks/use-query";
-// import { useQuery } from "@tanstack/react-query";
 import getRickAndMortyCharacters from "@/rest-clients/rick-and-morty/get-rick-and-morty-characters";
 import type { CharacterFilters } from "@/rest-clients/rick-and-morty/types";
 
@@ -9,7 +8,7 @@ export default function useGetRickAndMortyCharacters(
   props: UseGetRickAndMortyCharactersProps = {}
 ) {
   return useQuery({
-    queryKey: ["get-rick-and-morty-character-list", props],
+    queryKey: ["get-rick-and-morty-character-list", ...Object.values(props)],
     queryFn: async () => getRickAndMortyCharacters(props),
   });
 }
