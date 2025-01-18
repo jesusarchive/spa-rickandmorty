@@ -8,14 +8,18 @@ import useCharacterListContext from "../../providers/character-list-provider.hoo
 import { setResults } from "../../providers/character-list-provider.state";
 import CharacterDataGridHeaderBar from "./character-data-grid-header-bar";
 
-function CharacterList(props: { results?: Character[] }) {
-  if (!props?.results?.length) {
+type CharacterListProps = {
+  results?: Character[];
+};
+
+function CharacterList({ results }: CharacterListProps) {
+  if (!results?.length) {
     return null;
   }
 
   return (
     <ul className="border-t border-gray-200 p-4">
-      {props?.results?.map((el: Character) => (
+      {results?.map((el: Character) => (
         <li
           key={el.id}
           className="flex items-center gap-8 bg-gray-100 p-8 rounded-lg shadow border-b border-gray-200 hover:bg-gray-200"
