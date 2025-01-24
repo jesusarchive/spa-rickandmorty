@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 
 export type UseQueryProps<T> = {
   queryKey: unknown[];
-  queryFn: (...args: any[]) => Promise<T>;
+  queryFn: (...args: unknown[]) => Promise<T>;
 };
 
 export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
